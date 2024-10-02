@@ -50,7 +50,7 @@ export const HomePage = () => {
         container
         spacing={0}
         direction="column"
-        sx={{ minHeight: "100vh", backgroundColor: "black", padding: 8 }}
+        sx={{ minHeight: "100vh", backgroundColor: "primary.main", padding: 8 }}
       >
         <Box sx={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)" }}>
           <Grid2 container size={12} sx={{ width: 600 }}>
@@ -122,8 +122,8 @@ export const HomePage = () => {
               <ImageList sx={{ width: 600 }} cols={1}>
                 <ImageListItem>
                   <img
-                    src="./src/cookiemanager/pages/cb-welcome-image.svg"
-                    alt="imagen"
+                    src="src/assets/img/cb-welcome-image.svg"
+                    alt="welcome-image"
                     loading="lazy"
                   />
                 </ImageListItem>
