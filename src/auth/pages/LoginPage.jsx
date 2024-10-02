@@ -33,7 +33,7 @@ export const LoginPage = () => {
         <Typography
           variant="h4"
           align="center"
-          sx={{ mb: 1, mt: 3, color: "secondary.main" }}
+          sx={{ mt: 3, color: "secondary.main" }}
         >
           Manager
         </Typography>
@@ -47,7 +47,7 @@ export const LoginPage = () => {
           width: { md: 420 },
         }}
       >
-        <Typography variant="h4" align="center" sx={{ mb: 1, mt: 3 }}>
+        <Typography variant="h4" align="center" sx={{ mt: 1 }}>
           Iniciar sesión
         </Typography>
         <Grid2 sx={{ mt: 3 }}>
@@ -61,7 +61,7 @@ export const LoginPage = () => {
               <TextField
                 label="Correo electrónico"
                 type="email"
-                placeholder="correo@google.com"
+                placeholder="Correo electrónico"
                 fullWidth
                 size="medium"
                 required
@@ -86,7 +86,7 @@ export const LoginPage = () => {
               <TextField
                 label="Contraseña"
                 type="password"
-                placeholder="••••••"
+                placeholder="Contraseña"
                 fullWidth
                 size="medium"
                 required
