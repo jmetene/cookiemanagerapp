@@ -29,14 +29,22 @@ export const HomePage = () => {
               <Typography
                 variant="h5"
                 component="div"
-                sx={{ flexGrow: 1, color: "secondary.main" }}
+                sx={{ color: "secondary.main" }}
               >
-                CookieManager
+                Cookie
+              </Typography>
+              <Typography
+                variant="h5"
+                component="div"
+                sx={{ flexGrow: 1, color: "primary.main" }}
+              >
+                Manager
               </Typography>
 
               <Button
                 variant="outlined"
                 size="large"
+                href="/auth/login"
                 sx={{
                   bgcolor: "secondary.main",
                   height: 52,
@@ -49,7 +57,7 @@ export const HomePage = () => {
                   },
                 }}
               >
-                EMPIEZA GRATIS
+                INICIAR SESIÓN
               </Button>
             </Toolbar>
           </AppBar>
