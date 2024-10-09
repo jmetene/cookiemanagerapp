@@ -1,4 +1,3 @@
-import { Copyright } from "@mui/icons-material";
 import { Box, Container, Paper, Typography } from "@mui/material";
 
 export const Footer = () => {
@@ -13,7 +12,7 @@ export const Footer = () => {
       }}
       component="footer"
       square
-      variant="outlined"
+      variant="elevation"
     >
       <Container maxWidth="lg">
         <Box
