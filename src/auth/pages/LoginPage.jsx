@@ -7,6 +7,7 @@ export const LoginPage = () => {
     <AuthLayout
       title="Iniciar sesión"
       description="Introduce tu email y contraseña para iniciar sesión en tu cuenta"
+      size={420}
     >
       <form>
         <Grid2 container>

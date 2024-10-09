@@ -1,7 +1,12 @@
-import { CookieRounded } from "@mui/icons-material";
 import { Grid2, Typography } from "@mui/material";
+import { AuthLogo } from "../components/AuthLogo";
 
-export const AuthLayout = ({ children, title = "", description = "" }) => {
+export const AuthLayout = ({
+  children,
+  title = "",
+  description = "",
+  size = 0,
+}) => {
   return (
     <Grid2
       container
@@ -11,39 +16,14 @@ export const AuthLayout = ({ children, title = "", description = "" }) => {
       justifyContent="center"
       sx={{ minHeight: "100vh", backgroundColor: "primary.main", padding: 4 }}
     >
-      <Grid2 container>
-        <CookieRounded
-          fontSize="large"
-          sx={{
-            mb: 1,
-            mt: 3,
-            mr: 0.2,
-            color: "secondary.main",
-            rotate: "45deg",
-          }}
-        />
-        <Typography
-          variant="h4"
-          align="center"
-          sx={{ mb: 1, mt: 3, color: "white" }}
-        >
-          Cookie
-        </Typography>
-        <Typography
-          variant="h4"
-          align="center"
-          sx={{ mt: 3, color: "secondary.main" }}
-        >
-          Manager
-        </Typography>
-      </Grid2>
+      <AuthLogo />
       <Grid2
         className="box-shadow"
         sx={{
           backgroundColor: "white",
           padding: 3,
           borderRadius: 2,
-          width: { md: 420 },
+          width: { md: size },
         }}
       >
         <Typography variant="h4" align="center" sx={{ mt: 1 }}>
