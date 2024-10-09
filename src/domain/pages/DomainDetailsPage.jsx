@@ -1,3 +1,5 @@
+import { Typography } from "@mui/material";
+
 export const DomainDetailsPage = () => {
-  return <div>DomainDetailsPage</div>;
+  return <Typography variant="h1">DomainDetailsPage</Typography>;
 };

@@ -54,6 +54,7 @@ export const LoginPage = () => {
               fullWidth
               size="large"
               sx={{ height: 52, bgcolor: "secondary.main" }}
+              href="/domains"
             >
               INICIAR SESIÓN
             </Button>
