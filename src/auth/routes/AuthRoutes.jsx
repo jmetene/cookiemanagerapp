@@ -19,7 +19,7 @@ export const AuthRoutes = () => {
       <Route path="recovery-password" element={<PasswordRecoveryPage />} />
 
       {/**Routa por defecto */}
-      <Route path="*/" element={<Navigate to="/auth/login" />} />
+      <Route path="/*" element={<Navigate to="/auth/login" />} />
     </Routes>
   );
 };
