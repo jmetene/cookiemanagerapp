@@ -1,6 +1,4 @@
-import { Footer } from "../components/Footer";
-import { MainSection } from "../components/MainSection";
-import { NavBar } from "../components/NavBar";
+import { Footer, NavBar, MainSection } from "../components";
 
 export const DomainPage = () => {
   return (
