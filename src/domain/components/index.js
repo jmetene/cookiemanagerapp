@@ -3,3 +3,8 @@ export * from "./Footer";
 export * from "./MainSection";
 export * from "./NavBar";
 export * from "./HeadSection";
+export * from "./CGeneralSettingsField";
+export * from "./CRegionalSettingsField";
+export * from "./CLenguageSettingsField";
+export * from "./CCategoriesSettingsField";
+export * from "./CButtonsSettingsField";
