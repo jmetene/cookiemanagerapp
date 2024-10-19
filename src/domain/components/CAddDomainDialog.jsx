@@ -14,7 +14,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { red } from "@mui/material/colors";
 
 export const CAddDomainDialog = ({
   openAddDomainDialog,
