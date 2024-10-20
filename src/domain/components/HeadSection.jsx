@@ -15,12 +15,12 @@ export const HeadSection = () => {
   const [openAddDomainDialog, setOpenAddDomainDialog] = useState(false);
 
   const handleOpenAddDomain = () => {
-    console.log("Abriendo el dialogo para añadir dominio");
+    //console.log("Abriendo el dialogo para añadir dominio");
     setOpenAddDomainDialog(true);
   };
 
   const handleCloseAddDomainDialog = () => {
-    console.log("Cerrando el dialogo de añadir dominio");
+    // console.log("Cerrando el dialogo de añadir dominio");
     setOpenAddDomainDialog(false);
   };
 

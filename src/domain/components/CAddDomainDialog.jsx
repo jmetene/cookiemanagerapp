@@ -14,7 +14,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { red } from "@mui/material/colors";
 
 export const CAddDomainDialog = ({
   openAddDomainDialog,
@@ -42,18 +41,16 @@ export const CAddDomainDialog = ({
         <DialogTitle sx={{ pl: 8, pr: 8 }}>Añadir dominio</DialogTitle>
         <DialogContent sx={{ pl: 8, pr: 8 }}>
           <DialogContentText>
-            <Typography color="primary.main">
-              Escriba su nombre de dominio o sitio web a continuación para crear
-              una nueva instancia de CookieManager
-            </Typography>
-            <Typography sx={{ mt: 2 }} color="primary.main">
-              CookieManager restrará el sitio web para identificar las cookies
-              en uso y crear un banner personalizado de consentimiento de
-              cookies. La primera exploración sólo escanerá una solo página para
-              acelerar el proceso de despliegue. Una exploración completa del
-              sitio se llevará a cabo 24 horas más tarde o puede solicitar
-              manualmente un nuevo análisis.
-            </Typography>
+            Escriba su nombre de dominio o sitio web a continuación para crear
+            una nueva instancia de CookieManager
+          </DialogContentText>
+          <DialogContentText sx={{ mt: 2 }} color="primary.main">
+            CookieManager restrará el sitio web para identificar las cookies en
+            uso y crear un banner personalizado de consentimiento de cookies. La
+            primera exploración sólo escanerá una solo página para acelerar el
+            proceso de despliegue. Una exploración completa del sitio se llevará
+            a cabo 24 horas más tarde o puede solicitar manualmente un nuevo
+            análisis.
           </DialogContentText>
           <Box>
             <Grid2 container direction={"row"}>
@@ -109,7 +106,6 @@ export const CAddDomainDialog = ({
                   fullWidth
                   multiline
                   rows={4}
-                  maxRows={4}
                 />
               </Box>
             </Grid2>
