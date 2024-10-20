@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Box, Tab, Tabs } from "@mui/material";
 import {
-  DomainDescriptionPage,
   ImplementationPage,
   SettingPage,
   ScannerCookiePage,
   CookieListPage,
   StatisticsCookiesPage,
 } from "../pages";
+import { DomainDescriptionTabView } from "../views";
 
 const cards = [
   {
@@ -56,7 +56,7 @@ export const DomainTabs = () => {
         <Tab label="Cookies" />
         <Tab label="Informes" />
       </Tabs>
-      {currentTabIndex === 0 && <DomainDescriptionPage cards={cards} />}
+      {currentTabIndex === 0 && <DomainDescriptionTabView cards={cards} />}
       {currentTabIndex === 1 && <ImplementationPage />}
       {currentTabIndex === 2 && <SettingPage />}
       {currentTabIndex === 3 && <ScannerCookiePage />}

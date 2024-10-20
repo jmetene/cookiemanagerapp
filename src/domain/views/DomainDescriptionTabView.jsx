@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { Grid2 } from "@mui/material";
 import { CardDetail } from "../components/CardDetail";
 
-export const DomainDescriptionPage = ({ cards = [] }) => {
+export const DomainDescriptionTabView = ({ cards = [] }) => {
   return (
     <Grid2 container sx={{ pb: 10, pt: 4, pl: 12 }}>
       {cards.map((card) => (
@@ -17,6 +17,6 @@ export const DomainDescriptionPage = ({ cards = [] }) => {
   );
 };
 
-DomainDescriptionPage.propTypes = {
+DomainDescriptionTabView.propTypes = {
   cards: PropTypes.array,
 };
