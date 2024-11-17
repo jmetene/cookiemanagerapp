@@ -30,6 +30,27 @@ export const MainSection = () => {
     createData("24f15da8", "www.elpais.es", 90),
     createData("24f1742a", "www.elmundo.es", 160),
   ];
+
+  const cookies = [
+    {
+      name: "_ga",
+      type: "",
+      category: "",
+      etiquetas: ["no secure", "http Only", "LAX"],
+    },
+    {
+      name: "_",
+      type: "",
+      category: "esencial",
+      etiquetas: ["no secure", "http Only", "LAX"],
+    },
+    {
+      name: "_fa",
+      type: "",
+      category: "third",
+      etiquetas: ["no secure", "http Only", "LAX"],
+    },
+  ];
   return (
     <Grid2
       container
@@ -37,6 +58,7 @@ export const MainSection = () => {
       sx={{ backgroundColor: "#F5F7F8", padding: 5 }}
     >
       <Container>
+        {cookies.filter((cookie) => cookie.category === "esencial").map}
         <Box>
           <HeadSection />
         </Box>

@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { useState } from "react";
 import {
   Button,
   ButtonGroup,
@@ -9,8 +10,19 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { CEditDomainDialog } from "./CEditDomainDialog";
 
 export const DomainTable = ({ dominios = [] }) => {
+  const [openEditDomainDialog, setOpenEditDomainDialog] = useState(false);
+
+  const handleOpenEditDomain = () => {
+    setOpenEditDomainDialog(true);
+  };
+
+  const handleCloseEditDomainDialog = () => {
+    setOpenEditDomainDialog(false);
+  };
+
   return (
     <Table sx={{ minWidth: 650 }} aria-label="simple table">
       <TableHead>
@@ -50,9 +62,25 @@ export const DomainTable = ({ dominios = [] }) => {
                 >
                   Ver detalles
                 </Button>
+                <Button
+                  onClick={handleOpenEditDomain}
+                  variant="text"
+                  sx={{
+                    "&:hover": {
+                      bgcolor: "secondary.main",
+                      color: "white",
+                    },
+                  }}
+                >
+                  Editar
+                </Button>
                 <Button variant="text" color="error">
                   Eliminar
                 </Button>
+                <CEditDomainDialog
+                  openEditDomainDialog={openEditDomainDialog}
+                  handleCloseEditDomainDialog={handleCloseEditDomainDialog}
+                />
               </ButtonGroup>
             </TableCell>
           </TableRow>
