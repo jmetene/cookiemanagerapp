@@ -1,17 +1,36 @@
-import { Route, Routes } from "react-router-dom";
+import { useEffect } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { AuthRoutes } from "../auth/routes/AuthRoutes";
 import { CookieManagerRoutes } from "../cookiemanager/routes/CookieManagerRoutes";
 import { DomainsRoutes } from "../domain/routes/DomainsRoutes";
+import { useAuthStore } from "../hooks";
 
 export const AppRoutes = () => {
+  const { status, checkAuthToken } = useAuthStore();
+
+  useEffect(() => {
+    checkAuthToken();
+  }, []);
+
+  if (status === "checking") {
+    // TODO: Crear un componente para mostar el estado de carga de los dominios
+    return <h3>Cargando...</h3>;
+  }
+
   return (
     <Routes>
-      {/**Auth routes */}
-      <Route path="/auth/*" element={<AuthRoutes />} />
-      {/**Cookie Manager Home Page */}
-      <Route path="/*" element={<CookieManagerRoutes />} />
-      {/** Domain routes */}
-      <Route path="/domains/*" element={<DomainsRoutes />} />
+      {status === "not-authenticated" ? (
+        <>
+          <Route path="/*" element={<CookieManagerRoutes />} />
+          <Route path="/auth/*" element={<AuthRoutes />} />
+          <Route path="/*" element={<Navigate to={"/auth/login"} />} />
+        </>
+      ) : (
+        <>
+          <Route path="/" element={<DomainsRoutes />} />
+          <Route path="/*" element={<Navigate to={"/"} />} />
+        </>
+      )}
     </Routes>
   );
 };
