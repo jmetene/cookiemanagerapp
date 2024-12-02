@@ -9,10 +9,20 @@ import {
 import { useState } from "react";
 import { DomainTable } from "./DomainTable";
 import { HeadSection } from "./HeadSection";
+import { useDomainStore } from "../../hooks/useDomainStore";
+import { useEffect } from "react";
 
 export const MainSection = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const { domains, isLoadingDomains, startLoadingDomains } = useDomainStore();
+
+  useEffect(() => {
+    startLoadingDomains();
+  }, []);
+
+  if (isLoadingDomains) return <p>Cargando el listado de dominios...</p>;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -22,35 +32,7 @@ export const MainSection = () => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  function createData(codigo, nombre, totalCookies) {
-    return { codigo, nombre, totalCookies };
-  }
-  const dominios = [
-    createData("24f15e7d", "www.marca.com", 384),
-    createData("24f15da8", "www.elpais.es", 90),
-    createData("24f1742a", "www.elmundo.es", 160),
-  ];
 
-  const cookies = [
-    {
-      name: "_ga",
-      type: "",
-      category: "",
-      etiquetas: ["no secure", "http Only", "LAX"],
-    },
-    {
-      name: "_",
-      type: "",
-      category: "esencial",
-      etiquetas: ["no secure", "http Only", "LAX"],
-    },
-    {
-      name: "_fa",
-      type: "",
-      category: "third",
-      etiquetas: ["no secure", "http Only", "LAX"],
-    },
-  ];
   return (
     <Grid2
       container
@@ -58,18 +40,17 @@ export const MainSection = () => {
       sx={{ backgroundColor: "#F5F7F8", padding: 5 }}
     >
       <Container>
-        {cookies.filter((cookie) => cookie.category === "esencial").map}
         <Box>
           <HeadSection />
         </Box>
         <Box sx={{ mt: 5 }}>
           <TableContainer component={Paper}>
-            <DomainTable dominios={dominios} />
+            <DomainTable domains={domains} />
           </TableContainer>
           <TablePagination
             rowsPerPageOptions={[10, 25, 100]}
             component="div"
-            count={dominios.length}
+            count={domains.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

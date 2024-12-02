@@ -4,6 +4,7 @@ import { AuthRoutes } from "../auth/routes/AuthRoutes";
 import { CookieManagerRoutes } from "../cookiemanager/routes/CookieManagerRoutes";
 import { DomainsRoutes } from "../domain/routes/DomainsRoutes";
 import { useAuthStore } from "../hooks";
+import { DomainAddPage, DomainDetailsPage, DomainPage } from "../domain/pages";
 
 export const AppRoutes = () => {
   const { status, checkAuthToken } = useAuthStore();
@@ -27,7 +28,9 @@ export const AppRoutes = () => {
         </>
       ) : (
         <>
-          <Route path="/" element={<DomainsRoutes />} />
+          <Route path="/" element={<DomainPage />} />
+          <Route path="/domains/details" element={<DomainDetailsPage />} />
+          <Route path="/domains/add" element={<DomainAddPage />} />
           <Route path="/*" element={<Navigate to={"/"} />} />
         </>
       )}

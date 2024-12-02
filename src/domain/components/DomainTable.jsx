@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { CEditDomainDialog } from "./CEditDomainDialog";
 
-export const DomainTable = ({ dominios = [] }) => {
+export const DomainTable = ({ domains = [] }) => {
   const [openEditDomainDialog, setOpenEditDomainDialog] = useState(false);
 
   const handleOpenEditDomain = () => {
@@ -34,19 +34,19 @@ export const DomainTable = ({ dominios = [] }) => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {dominios.map((dominio) => (
+        {domains.map((domain) => (
           <TableRow
-            key={dominio.codigo}
+            key={domain.id}
             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
           >
             <TableCell component="th" scope="row">
-              <Typography variant="body1">{dominio.codigo}</Typography>
+              <Typography variant="body1">{domain.id}</Typography>
             </TableCell>
             <TableCell>
-              <Typography variant="body1">{dominio.nombre}</Typography>
+              <Typography variant="body1">{domain.nombre}</Typography>
             </TableCell>
             <TableCell>
-              <Typography variant="body1">{dominio.totalCookies}</Typography>
+              <Typography variant="body1">{domain.totalCookies}</Typography>
             </TableCell>
             <TableCell>
               <ButtonGroup variant="text" aria-label="Basic button group">
@@ -91,5 +91,5 @@ export const DomainTable = ({ dominios = [] }) => {
 };
 
 DomainTable.propTypes = {
-  dominios: PropTypes.array,
+  domains: PropTypes.array,
 };

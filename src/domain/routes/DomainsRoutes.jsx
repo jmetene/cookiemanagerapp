@@ -7,10 +7,10 @@ export const DomainsRoutes = () => {
       {/**<Route path="/" element={<DomainPage />} /> */}
 
       <Route path="" element={<DomainPage />} />
-      <Route path="details" element={<DomainDetailsPage />} />
-      <Route path="add" element={<DomainAddPage />} />
+      <Route exact path="/domains/details" element={<DomainDetailsPage />} />
+      <Route path="/add" element={<DomainAddPage />} />
 
-      <Route path="/*" element={<Navigate to="/domains" />} />
+      {/* <Route path="/*" element={<Navigate to="/domains" />} /> */}
     </Routes>
   );
 };

@@ -163,5 +163,5 @@ export const NavBar = ({ startLogout, user }) => {
 
 NavBar.propTypes = {
   startLogout: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
+  user: PropTypes.object,
 };
