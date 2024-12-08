@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { Grid2, Typography } from "@mui/material";
 import { AuthLogo } from "../components/AuthLogo";
 
@@ -38,4 +39,11 @@ export const AuthLayout = ({
       </Grid2>
     </Grid2>
   );
+};
+
+AuthLayout.propTypes = {
+  children: PropTypes.node,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string,
+  size: PropTypes.number,
 };

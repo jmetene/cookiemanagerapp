@@ -1,11 +1,10 @@
-import { Footer, NavBar, MainSection } from "../components";
+import { MainSection } from "../components";
+import { DomainLayout } from "../layout/DomainLayout";
 
 export const DomainPage = () => {
   return (
-    <>
-      <NavBar />
+    <DomainLayout>
       <MainSection />
-      <Footer />
-    </>
+    </DomainLayout>
   );
 };

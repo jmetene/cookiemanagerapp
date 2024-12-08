@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import {
   Box,
   Button,
@@ -8,47 +7,44 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import { useForm } from "../../hooks";
+import PropTypes from "prop-types";
 import { useDomainStore } from "../../hooks/useDomainStore";
+import { useForm } from "../../hooks";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
 import { DialogForm } from "./DialogForm";
-
-const createDomainForm = {
+const updateDomainForm = {
   domainName: "",
   domainUrl: "",
   ownerName: "",
   ownerEmail: "",
   domainDesc: "",
 };
-
-export const CAddDomainDialog = ({
-  openAddDomainDialog,
-  handleCloseAddDomainDialog,
+export const CEditDomainDialog = ({
+  domainToEdit,
+  openEditDomainDialog,
+  handleCloseEditDomainDialog,
 }) => {
-  const estado = "activo";
-  const { startSavingDomain, startLoadingDomains, errorMessage } =
-    useDomainStore();
+  const { startUpdatingDomain, errorMessage } = useDomainStore();
 
   const {
-    domainName,
-    domainUrl,
+    // domainName,
     ownerName,
     ownerEmail,
     domainDesc,
-    onInputChange: onCreateDomainChange,
-  } = useForm(createDomainForm);
+    onInputChange: onEditDomainChange,
+  } = useForm(updateDomainForm);
 
-  const onCreateDomainSubmit = (event) => {
-    event.preventDefault();
-    startSavingDomain({
-      nombre: domainName,
+  const onUpdateDomainSubmit = () => {
+    // event.preventDefault();
+    startUpdatingDomain({
+      id: domainToEdit.id,
+      nombre: domainToEdit.nombre,
       descripcion: domainDesc,
-      estado: estado,
+      estado: "activo",
       propietario: ownerName,
       contactoEmail: ownerEmail,
     });
-    // startLoadingDomains();
   };
 
   useEffect(() => {
@@ -62,17 +58,17 @@ export const CAddDomainDialog = ({
       <Dialog
         fullWidth
         maxWidth="lg"
-        open={openAddDomainDialog}
-        onClose={handleCloseAddDomainDialog}
+        open={openEditDomainDialog}
+        onClose={handleCloseEditDomainDialog}
         PaperProps={{
           component: "form",
           onSubmit: (event) => {
-            onCreateDomainSubmit(event);
-            handleCloseAddDomainDialog();
+            onUpdateDomainSubmit(event);
+            handleCloseEditDomainDialog();
           },
         }}
       >
-        <DialogTitle sx={{ pl: 8, pr: 8 }}>Añadir dominio</DialogTitle>
+        <DialogTitle sx={{ pl: 8, pr: 8 }}>Editar dominio </DialogTitle>
         <DialogContent sx={{ pl: 8, pr: 8 }}>
           <DialogContentText>
             Escriba su nombre de dominio o sitio web a continuación para crear
@@ -87,12 +83,12 @@ export const CAddDomainDialog = ({
             análisis.
           </DialogContentText>
           <DialogForm
-            domainName={domainName}
-            domainUrl={domainUrl}
+            domainName={domainToEdit.nombre}
+            domainUrl={domainToEdit.nombre}
             ownerName={ownerName}
             ownerEmail={ownerEmail}
             domainDesc={domainDesc}
-            onEditDomainChange={onCreateDomainChange}
+            onEditDomainChange={onEditDomainChange}
           />
         </DialogContent>
         <DialogActions sx={{ pl: 8, pr: 8, pb: 3 }}>
@@ -105,12 +101,12 @@ export const CAddDomainDialog = ({
               borderColor: "secondary.main",
             }}
           >
-            Añadir dominio
+            Editar dominio
           </Button>
           <Button
             variant="outlined"
             sx={{ bgcolor: "primary.main", color: "white" }}
-            onClick={handleCloseAddDomainDialog}
+            onClick={handleCloseEditDomainDialog}
           >
             Cancelar
           </Button>
@@ -119,7 +115,8 @@ export const CAddDomainDialog = ({
     </Box>
   );
 };
-CAddDomainDialog.propTypes = {
-  openAddDomainDialog: PropTypes.bool,
-  handleCloseAddDomainDialog: PropTypes.func,
+CEditDomainDialog.propTypes = {
+  domainToEdit: PropTypes.object.isRequired,
+  openEditDomainDialog: PropTypes.bool,
+  handleCloseEditDomainDialog: PropTypes.func,
 };

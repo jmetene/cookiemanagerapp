@@ -5,7 +5,7 @@ export const CookieManagerRoutes = () => {
   return (
     <Routes>
       {/**Routa que apunta a la página principal */}
-      <Route path="/" element={<HomePage />} />
+      <Route path="" element={<HomePage />} />
 
       {/**Routa por defecto */}
       <Route path="/*" element={<Navigate to="/" />} />

@@ -14,8 +14,9 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
+import PropTypes from "prop-types";
 
-export const NavBar = () => {
+export const NavBar = ({ startLogout, user }) => {
   const pages = ["Mis dominios", "Soporte", "FAQ"];
   const settings = [
     { title: "Settings", icon: "Setting" },
@@ -38,6 +39,10 @@ export const NavBar = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleLogout = () => {
+    startLogout();
   };
 
   return (
@@ -132,12 +137,13 @@ export const NavBar = () => {
                 {settings.map((setting) => (
                   <MenuItem
                     key={setting.title}
-                    onClick={handleCloseUserMenu}
+                    onClick={handleLogout}
                     sx={{ color: "secondary.main" }}
                   >
                     <ListItemIcon>
                       {setting.icon === "Logout" ? (
                         <Logout
+                          // onClick={handleLogout}
                           fontSize="small"
                           sx={{ color: "secondary.main" }}
                         />
@@ -158,4 +164,9 @@ export const NavBar = () => {
       </Container>
     </Box>
   );
+};
+
+NavBar.propTypes = {
+  startLogout: PropTypes.func,
+  user: PropTypes.object,
 };
