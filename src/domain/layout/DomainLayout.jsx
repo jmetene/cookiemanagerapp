@@ -1,13 +1,10 @@
 import PropTypes from "prop-types";
 import { Footer, NavBar } from "../components";
-import { useAuthStore } from "../../hooks";
 
 export const DomainLayout = ({ children }) => {
-  const { startLogout, user } = useAuthStore();
-
   return (
     <>
-      <NavBar startLogout={startLogout} user={user} />
+      <NavBar />
       {children}
       <Footer />
     </>

@@ -18,13 +18,14 @@ export const useAuthStore = () => {
         password,
       });
       localStorage.setItem("token", "Bearer " + data.token);
-      localStorage.setItem("currentUser", JSON.stringify(data.user));
+      console.log({ UserLoged: data });
       dispatch(
         onLogin({
           email: data.user.email,
           name: data.user.firstName,
           lastname: data.user.lastName,
           plan: data.user.suscriptionPlan,
+          role: data.user.role,
         })
       );
     } catch (error) {
@@ -83,6 +84,7 @@ export const useAuthStore = () => {
           name: data.user.firstName,
           lastname: data.user.lastName,
           plan: data.user.suscriptionPlan,
+          role: data.user.role,
         })
       );
     } catch (error) {

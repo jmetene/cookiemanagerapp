@@ -34,7 +34,7 @@ export const useDomainStore = () => {
       });
       console.log(data);
 
-      // Despachamos el dominio recién creado
+      // Ejecutamos la acción onAddNewDomain para agregar el dominio recién creado
       dispatch(onAddNewDomain(data));
 
       // Devolvemos el dominio creado para usarlo en el componente si fuera necesario

@@ -12,8 +12,8 @@ import { DomainDescriptionTabView } from "../views";
 import dayjs from "dayjs";
 import { useEffect } from "react";
 
-export const DomainTabs = ({ user, domain }) => {
-  // Recuperamos el índice del tab desde el localStorage, si existe
+export const DomainTabs = ({ user, domain, setActiveTab }) => {
+  // Recuperamos el índice del tab desde localStorage, si existe
   const storedTabIndex = localStorage.getItem(`activeTabIndex-${domain.id}`);
   const [currentTabIndex, setCurrentTabIndex] = useState(
     storedTabIndex ? parseInt(storedTabIndex, 10) : 0
@@ -21,8 +21,12 @@ export const DomainTabs = ({ user, domain }) => {
 
   // Guardamos el índice del tab activo en el localStorage cuando cambia
   useEffect(() => {
+    // Para persistir el Tab actual
     localStorage.setItem(`activeTabIndex-${domain.id}`, currentTabIndex);
-  }, [currentTabIndex, domain.id]);
+
+    // Para controlar la visibilidad del botón Añadir Cookie
+    setActiveTab(currentTabIndex);
+  }, [currentTabIndex, setActiveTab, domain.id]);
 
   const fecha = dayjs(domain.lastCookieScan).format("DD/MM/YYYY");
 
@@ -30,11 +34,9 @@ export const DomainTabs = ({ user, domain }) => {
    *  - Tiene cookies cargadas para realizar ciertas acciones
    *  - Tiene historial de scaneos
    */
-
   const cards = [
     {
       id: 1,
-      // title: user === undefined ? "Basico" : `${user.plan}`.toLocaleUpperCase(),
       title: `${user.plan}`.toLocaleUpperCase(),
       description: "Descripción del plan básico",
       buttonTitle: "Actualizar plan",
@@ -91,4 +93,5 @@ export const DomainTabs = ({ user, domain }) => {
 DomainTabs.propTypes = {
   user: PropTypes.object,
   domain: PropTypes.object,
+  setActiveTab: PropTypes.func,
 };

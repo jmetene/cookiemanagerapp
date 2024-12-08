@@ -1,12 +1,10 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // Usa localStorage por defecto
-// import {} from "react-redux"
 import { authSlice } from "./auth/authSlice";
 import { domainSlice } from "./domain/domainSlice";
 import persistStore from "redux-persist/es/persistStore";
 import { cookieSlice } from "./cookies/cookieSlice";
-// import { version } from "react";
 
 // Configuración de redux-persist
 const persistConfig = {

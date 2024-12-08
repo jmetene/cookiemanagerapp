@@ -3,19 +3,17 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { AuthRoutes } from "../auth/routes/AuthRoutes";
 import { CookieManagerRoutes } from "../cookiemanager/routes/CookieManagerRoutes";
 import { useAuthStore } from "../hooks";
-import { DomainAddPage, DomainDetailsPage, DomainPage } from "../domain/pages";
+import { DomainDetailsPage, DomainPage } from "../domain/pages";
+import UserAccoutPage from "../domain/pages/UserAccoutPage";
 
 export const AppRoutes = () => {
-  const { status, checkAuthToken } = useAuthStore();
+  const { user, status, checkAuthToken } = useAuthStore();
+
+  console.log({ AppRoutesUser: user });
 
   useEffect(() => {
     checkAuthToken();
   }, []);
-
-  if (status === "checking") {
-    // TODO: Crear un componente para mostar el estado de carga de los dominios
-    return <h3>Cargando...</h3>;
-  }
 
   return (
     <Routes>
@@ -29,7 +27,7 @@ export const AppRoutes = () => {
         <>
           <Route path="/" element={<DomainPage />} />
           <Route path="/domains/:id" element={<DomainDetailsPage />} />
-          <Route path="/domains/add" element={<DomainAddPage />} />
+          <Route path="/user/:name" element={<UserAccoutPage />} />
           <Route path="/*" element={<Navigate to={"/"} />} />
         </>
       )}

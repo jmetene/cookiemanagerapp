@@ -8,3 +8,4 @@ export * from "./CRegionalSettingsField";
 export * from "./CLenguageSettingsField";
 export * from "./CCategoriesSettingsField";
 export * from "./CButtonsSettingsField";
+export * from "./CMenu";

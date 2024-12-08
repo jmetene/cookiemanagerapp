@@ -15,7 +15,7 @@ import { useDomainStore } from "../../hooks/useDomainStore";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 
-export const DomainTable = ({ domains = [] }) => {
+export const DomainTable = ({ domains = [], page, rowsPerPage }) => {
   const [openEditDomainDialog, setOpenEditDomainDialog] = useState(false);
 
   const { startDeletingDomain, errorMessage } = useDomainStore();
@@ -32,9 +32,6 @@ export const DomainTable = ({ domains = [] }) => {
   const handleCloseEditDomainDialog = () => {
     setOpenEditDomainDialog(false);
   };
-
-  // Se usará para mostrar los datos del usuario
-  // console.log("Usauario logeado: ", user);
 
   const handleDeleteDomain = (domainId) => {
     Swal.fire({
@@ -74,62 +71,64 @@ export const DomainTable = ({ domains = [] }) => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {domains.map((domain) => (
-          <TableRow
-            key={domain.id}
-            sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-          >
-            <TableCell component="th" scope="row">
-              <Typography variant="body1">{domain.id}</Typography>
-            </TableCell>
-            <TableCell>
-              <Typography variant="body1">{domain.nombre}</Typography>
-            </TableCell>
-            <TableCell>
-              <Typography variant="body1">{domain.totalCookies}</Typography>
-            </TableCell>
-            <TableCell>
-              <ButtonGroup variant="text" aria-label="Basic button group">
-                <Button
-                  variant="text"
-                  // onClick={() => navigate("/domains/details")}
-                  sx={{
-                    "&:hover": {
-                      bgcolor: "secondary.main",
-                      color: "white",
-                    },
-                  }}
-                >
-                  <Link to={`/domains/${domain.id}`}>Ver detalles</Link>
-                </Button>
-                <Button
-                  onClick={() => handleOpenEditDomain(domain)}
-                  variant="text"
-                  sx={{
-                    "&:hover": {
-                      bgcolor: "secondary.main",
-                      color: "white",
-                    },
-                  }}
-                >
-                  Editar
-                </Button>
-                <Button
-                  variant="text"
-                  color="error"
-                  onClick={() => handleDeleteDomain(domain.id)}
-                >
-                  Eliminar
-                </Button>
-                <CEditDomainDialog
-                  openEditDomainDialog={openEditDomainDialog}
-                  handleCloseEditDomainDialog={handleCloseEditDomainDialog}
-                  domainToEdit={domainToEdit}
-                />
-              </ButtonGroup>
-            </TableCell>
-          </TableRow>
-        ))}
+        {domains
+          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+          .map((domain) => (
+            <TableRow
+              key={domain.id}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">
+                <Typography variant="body1">{domain.id}</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="body1">{domain.nombre}</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="body1">{domain.totalCookies}</Typography>
+              </TableCell>
+              <TableCell>
+                <ButtonGroup variant="text" aria-label="Basic button group">
+                  <Button
+                    variant="text"
+                    // onClick={() => navigate("/domains/details")}
+                    sx={{
+                      "&:hover": {
+                        bgcolor: "secondary.main",
+                        color: "white",
+                      },
+                    }}
+                  >
+                    <Link to={`/domains/${domain.id}`}>Ver detalles</Link>
+                  </Button>
+                  <Button
+                    onClick={() => handleOpenEditDomain(domain)}
+                    variant="text"
+                    sx={{
+                      "&:hover": {
+                        bgcolor: "secondary.main",
+                        color: "white",
+                      },
+                    }}
+                  >
+                    Editar
+                  </Button>
+                  <Button
+                    variant="text"
+                    color="error"
+                    onClick={() => handleDeleteDomain(domain.id)}
+                  >
+                    Eliminar
+                  </Button>
+                  <CEditDomainDialog
+                    openEditDomainDialog={openEditDomainDialog}
+                    handleCloseEditDomainDialog={handleCloseEditDomainDialog}
+                    domainToEdit={domainToEdit}
+                  />
+                </ButtonGroup>
+              </TableCell>
+            </TableRow>
+          ))}
       </TableBody>
     </Table>
   );
@@ -138,4 +137,6 @@ export const DomainTable = ({ domains = [] }) => {
 DomainTable.propTypes = {
   domains: PropTypes.array,
   user: PropTypes.object,
+  page: PropTypes.number,
+  rowsPerPage: PropTypes.number,
 };
