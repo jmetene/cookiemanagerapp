@@ -11,14 +11,20 @@ import { DomainTable } from "./DomainTable";
 import { HeadSection } from "./HeadSection";
 import { useDomainStore } from "../../hooks/useDomainStore";
 import { useEffect } from "react";
+// import { useSelector } from "react-redux";
 
 export const MainSection = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
+  // const { user } = useAuthStore();
   const { domains, isLoadingDomains, startLoadingDomains } = useDomainStore();
+  // const isPersisted = useSelector((state) => state._persist.rehydrated); // Verifica si redux-persist ha restaurado
+
+  const user = JSON.parse(localStorage.getItem("currentUser"));
 
   useEffect(() => {
+    // if (isPersisted) {
     startLoadingDomains();
   }, []);
 
@@ -45,7 +51,7 @@ export const MainSection = () => {
         </Box>
         <Box sx={{ mt: 5 }}>
           <TableContainer component={Paper}>
-            <DomainTable domains={domains} />
+            <DomainTable domains={domains} user={user} />
           </TableContainer>
           <TablePagination
             rowsPerPageOptions={[10, 25, 100]}

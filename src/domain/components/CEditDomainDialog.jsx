@@ -1,25 +1,58 @@
 import {
   Box,
   Button,
-  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  FormControlLabel,
-  FormGroup,
-  Grid2,
-  TextField,
-  Typography,
 } from "@mui/material";
 import PropTypes from "prop-types";
-
+import { useDomainStore } from "../../hooks/useDomainStore";
+import { useForm } from "../../hooks";
+import { useEffect } from "react";
+import Swal from "sweetalert2";
+import { DialogForm } from "./DialogForm";
+const updateDomainForm = {
+  domainName: "",
+  domainUrl: "",
+  ownerName: "",
+  ownerEmail: "",
+  domainDesc: "",
+};
 export const CEditDomainDialog = ({
-  domainName = "random-domain.com",
+  domainToEdit,
   openEditDomainDialog,
   handleCloseEditDomainDialog,
 }) => {
+  const { startUpdatingDomain, errorMessage } = useDomainStore();
+
+  const {
+    // domainName,
+    ownerName,
+    ownerEmail,
+    domainDesc,
+    onInputChange: onEditDomainChange,
+  } = useForm(updateDomainForm);
+
+  const onUpdateDomainSubmit = () => {
+    // event.preventDefault();
+    startUpdatingDomain({
+      id: domainToEdit.id,
+      nombre: domainToEdit.nombre,
+      descripcion: domainDesc,
+      estado: "activo",
+      propietario: ownerName,
+      contactoEmail: ownerEmail,
+    });
+  };
+
+  useEffect(() => {
+    if (errorMessage !== undefined) {
+      Swal.fire("Error en los datos del dominio", errorMessage, "error");
+    }
+  }, [errorMessage]);
+
   return (
     <Box>
       <Dialog
@@ -30,118 +63,33 @@ export const CEditDomainDialog = ({
         PaperProps={{
           component: "form",
           onSubmit: (event) => {
-            event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const formJson = Object.fromEntries(formData.entries());
-            const email = formJson.email;
-            console.log(email);
+            onUpdateDomainSubmit(event);
             handleCloseEditDomainDialog();
           },
         }}
       >
-        <DialogTitle sx={{ pl: 8, pr: 8 }}>Editando: {domainName}</DialogTitle>
+        <DialogTitle sx={{ pl: 8, pr: 8 }}>Editar dominio </DialogTitle>
         <DialogContent sx={{ pl: 8, pr: 8 }}>
-          <DialogContentText color="primary.main">
-            Por favor, ingresa o actualiza el nombre de dominio o sitio web que
-            desea gestionar.
+          <DialogContentText>
+            Escriba su nombre de dominio o sitio web a continuación para crear
+            una nueva instancia de CookieManager
           </DialogContentText>
-
-          <Box>
-            <Grid2 container direction={"row"}>
-              <Box sx={{ width: 775, mt: 2 }}>
-                <TextField
-                  autoFocus
-                  required
-                  id="name"
-                  name="Nombre de dominio"
-                  label="Nombre de dominio"
-                  value={"random-domain.com"}
-                  type="text"
-                  sx={{ width: 378, mr: 2 }}
-                />
-                <TextField
-                  autoFocus
-                  required
-                  id="name"
-                  name="url"
-                  label="Url dominio"
-                  value={"https://www.random-domain.com"}
-                  type="text"
-                  sx={{ width: 378 }}
-                />
-              </Box>
-              <Box sx={{ width: 775, mt: 1 }}>
-                <TextField
-                  autoFocus
-                  required
-                  id="name"
-                  name="Nombre propietario"
-                  label="Nombre propietario"
-                  type="text"
-                  value={"Jon Doe"}
-                  sx={{ width: 378, mr: 2 }}
-                />
-                <TextField
-                  autoFocus
-                  required
-                  id="name"
-                  name="email"
-                  label="Correo electrónico"
-                  type="email"
-                  value={"ejemplo@correo.com"}
-                  sx={{ width: 378 }}
-                />
-              </Box>
-              <Box sx={{ width: 775, mt: 1 }}>
-                <TextField
-                  autoFocus
-                  id="name"
-                  name="Descripción"
-                  label="Descripción"
-                  type="text"
-                  fullWidth
-                  multiline
-                  rows={4}
-                />
-              </Box>
-            </Grid2>
-          </Box>
-          <Box>
-            <Typography variant="h6" sx={{ mt: 2 }}>
-              Marcos políticos y configuración del consentimiento
-            </Typography>
-            <Typography>
-              Seleccione una plantilla a continuación para controlar la
-              configuración regional y los marcos de políticas para su dominio.
-              Siempre puede cambiar estos ajustes más adelante.
-            </Typography>
-            <FormGroup>
-              <FormControlLabel
-                control={<Checkbox />}
-                label="Por defecto (consentimiento explícito)"
-              />
-            </FormGroup>
-            <Typography>
-              El diálogo de consentimiento de CookieManager se mostrará para
-              todos los usuarios, requiriendo el consentimiento explícito.
-              Política simple y estricta para cumplir con la mayoría de las
-              regulaciones, incluyendo GDPR.
-            </Typography>
-            <Typography variant="h6" sx={{ mt: 2 }}>
-              Marcos políticos y configuración del consentimiento
-            </Typography>
-            <FormGroup>
-              <FormControlLabel
-                control={<Checkbox />}
-                label="Activar el modo consentimiento"
-              />
-            </FormGroup>
-            <Typography>
-              El modo de consentimiento está perfectamente integrado en
-              CookieManager, garantizando una implementación sin esfuerxo en
-              línea con los requisitos técnicos del modo de consentimiento.
-            </Typography>
-          </Box>
+          <DialogContentText sx={{ mt: 2 }} color="primary.main">
+            CookieManager restrará el sitio web para identificar las cookies en
+            uso y crear un banner personalizado de consentimiento de cookies. La
+            primera exploración sólo escanerá una solo página para acelerar el
+            proceso de despliegue. Una exploración completa del sitio se llevará
+            a cabo 24 horas más tarde o puede solicitar manualmente un nuevo
+            análisis.
+          </DialogContentText>
+          <DialogForm
+            domainName={domainToEdit.nombre}
+            domainUrl={domainToEdit.nombre}
+            ownerName={ownerName}
+            ownerEmail={ownerEmail}
+            domainDesc={domainDesc}
+            onEditDomainChange={onEditDomainChange}
+          />
         </DialogContent>
         <DialogActions sx={{ pl: 8, pr: 8, pb: 3 }}>
           <Button
@@ -153,7 +101,7 @@ export const CEditDomainDialog = ({
               borderColor: "secondary.main",
             }}
           >
-            Guardar cambios
+            Editar dominio
           </Button>
           <Button
             variant="outlined"
@@ -168,7 +116,7 @@ export const CEditDomainDialog = ({
   );
 };
 CEditDomainDialog.propTypes = {
-  domainName: PropTypes.string.isRequired,
+  domainToEdit: PropTypes.object.isRequired,
   openEditDomainDialog: PropTypes.bool,
   handleCloseEditDomainDialog: PropTypes.func,
 };

@@ -1,14 +1,10 @@
-import { useAuthStore } from "../../hooks";
-import { Footer, NavBar, MainSection } from "../components";
+import { MainSection } from "../components";
+import { DomainLayout } from "../layout/DomainLayout";
 
 export const DomainPage = () => {
-  const { startLogout, user } = useAuthStore();
-
   return (
-    <>
-      <NavBar startLogout={startLogout} user={user} />
+    <DomainLayout>
       <MainSection />
-      <Footer />
-    </>
+    </DomainLayout>
   );
 };

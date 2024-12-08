@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import cookieManagerApi from "../api/cookieManagerApi";
 import { clearErrorMessage, onChecking, onLogin, onLogout } from "../store";
+import { persistor } from "../store/store";
 
 export const useAuthStore = () => {
   const { status, user, errorMessage } = useSelector((state) => state.auth);
@@ -17,6 +18,7 @@ export const useAuthStore = () => {
         password,
       });
       localStorage.setItem("token", "Bearer " + data.token);
+      localStorage.setItem("currentUser", JSON.stringify(data.user));
       dispatch(
         onLogin({
           email: data.user.email,
@@ -25,7 +27,6 @@ export const useAuthStore = () => {
           plan: data.user.suscriptionPlan,
         })
       );
-      console.log({ token: data.token });
     } catch (error) {
       console.log(error);
       // Error genérico
@@ -75,7 +76,15 @@ export const useAuthStore = () => {
     try {
       const { data } = await cookieManagerApi.get("/auth/refreshToken");
       localStorage.setItem("token", "Bearer " + data.token);
-      dispatch(onLogin());
+      console.log({ UserWithRefreshToken: data });
+      dispatch(
+        onLogin({
+          email: data.user.email,
+          name: data.user.firstName,
+          lastname: data.user.lastName,
+          plan: data.user.suscriptionPlan,
+        })
+      );
     } catch (error) {
       console.log(error);
       localStorage.clear();
@@ -84,8 +93,14 @@ export const useAuthStore = () => {
   };
 
   const startLogout = async () => {
-    localStorage.clear();
-    dispatch(onLogout());
+    try {
+      await cookieManagerApi.get("/auth/logout");
+      persistor.purge();
+      localStorage.clear();
+      dispatch(onLogout());
+    } catch (error) {
+      console.log("Error al cerrar la sesión", error);
+    }
   };
 
   return {

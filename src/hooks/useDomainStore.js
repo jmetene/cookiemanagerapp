@@ -3,6 +3,7 @@ import cookieManagerApi from "../api/cookieManagerApi";
 import {
   onAddNewDomain,
   onDeleteDomain,
+  onGetDomainById,
   onLoadDomains,
   onUpdateDomain,
 } from "../store";
@@ -12,7 +13,7 @@ export const useDomainStore = () => {
   const dispatch = useDispatch();
 
   const { isLoadingDomains, domains, errorMessage } = useSelector(
-    (state) => state.domain
+    (state) => state.domains
   );
 
   const startSavingDomain = async ({
@@ -29,31 +30,56 @@ export const useDomainStore = () => {
         estado,
         propietario,
         contactoEmail,
+        paisOrigen: null,
       });
       console.log(data);
-      dispatch(onAddNewDomain);
+
+      // Despachamos el dominio recién creado
+      dispatch(onAddNewDomain(data));
+
+      // Devolvemos el dominio creado para usarlo en el componente si fuera necesario
+      return data;
     } catch (error) {
-      console.log(error);
-      Swal.fire("Error al crear el dominio", error.response.data.msg, "error");
+      console.error(error);
+      const errorMessage = error.response?.data?.msg || "Error desconocido";
+      Swal.fire("Error al crear el dominio", errorMessage, "error");
+
+      // Retornamos null en caso de error.
+      return null;
     }
   };
 
-  const startDeletingDomain = async (domain) => {
+  const startDeletingDomain = async (domainId) => {
     try {
-      const { data } = await cookieManagerApi.delete(`/domains/${domain.id}`);
-      console.log(data);
-      dispatch(onDeleteDomain);
+      await cookieManagerApi.delete(`/domains/${domainId}`);
+
+      // Despacha la acción para eliminar el dominio del estado local
+      dispatch(onDeleteDomain(domainId));
     } catch (error) {
-      console.log(error);
-      Swal.fire("Error al eliminar", error.response.data.msg, "error");
+      console.error("Error al eliminar el dominio:", error);
+      const errorMsg = error.response?.data?.msg || "Error desconocido";
+      Swal.fire("Error al eliminar", errorMsg, "error");
     }
   };
 
-  const startUpdatingDomain = async (domain) => {
+  const startUpdatingDomain = async ({
+    id,
+    nombre,
+    descripcion,
+    estado,
+    propietario,
+    contactoEmail,
+  }) => {
     try {
-      const { data } = await cookieManagerApi.put(`/domains/${domain.id}`);
+      const { data } = await cookieManagerApi.put(`/domains/${id}`, {
+        nombre,
+        descripcion,
+        estado,
+        propietario,
+        contactoEmail,
+      });
       console.log(data);
-      dispatch(onUpdateDomain);
+      dispatch(onUpdateDomain(data));
     } catch (error) {
       console.log(error);
       Swal.fire("Error al actualizar", error.response.data.msg, "error");
@@ -63,13 +89,29 @@ export const useDomainStore = () => {
   const startLoadingDomains = async () => {
     try {
       const { data } = await cookieManagerApi.get("/domains");
-      // console.log(data);
+      console.log({ domains: data });
       dispatch(onLoadDomains(data));
     } catch (error) {
       console.log("Error en la carga de dominios");
       console.log(error);
       Swal.fire(
         "Error al listar los dominios",
+        error.response.data.msg,
+        "error"
+      );
+    }
+  };
+
+  const starGettingDomainById = async (id) => {
+    try {
+      const { data } = await cookieManagerApi.get(`/domains/${id}`);
+      console.log(data);
+      dispatch(onGetDomainById(data));
+    } catch (error) {
+      console.log("Error al obtener los datos del dominio");
+      console.log(error);
+      Swal.fire(
+        "Error al obtener los datos del dominio",
         error.response.data.msg,
         "error"
       );
@@ -86,5 +128,6 @@ export const useDomainStore = () => {
     startLoadingDomains,
     startDeletingDomain,
     startUpdatingDomain,
+    starGettingDomainById,
   };
 };

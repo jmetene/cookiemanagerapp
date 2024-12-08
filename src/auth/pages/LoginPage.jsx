@@ -4,6 +4,7 @@ import { AuthLayout } from "../layout/AuthLayout";
 import { useAuthStore, useForm } from "../../hooks";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
+import { useRef } from "react";
 
 const loginFormFields = {
   loginEmail: "",
@@ -19,6 +20,8 @@ export const LoginPage = () => {
     onInputChange: onLoginInputChange,
   } = useForm(loginFormFields);
 
+  const errorRef = useRef();
+
   // Para enviar los datos del formulario
   const loginSubmit = (event) => {
     event.preventDefault();
@@ -26,7 +29,8 @@ export const LoginPage = () => {
   };
 
   useEffect(() => {
-    if (errorMessage !== undefined) {
+    if (errorMessage && errorMessage !== errorRef.current) {
+      errorRef.current = errorMessage; // Actualiza referencia
       Swal.fire("Error en la autenticación", errorMessage, "error");
     }
   }, [errorMessage]);

@@ -41,6 +41,10 @@ export const NavBar = ({ startLogout, user }) => {
     setAnchorElUser(null);
   };
 
+  const handleLogout = () => {
+    startLogout();
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Container>
@@ -133,12 +137,13 @@ export const NavBar = ({ startLogout, user }) => {
                 {settings.map((setting) => (
                   <MenuItem
                     key={setting.title}
-                    onClick={startLogout}
+                    onClick={handleLogout}
                     sx={{ color: "secondary.main" }}
                   >
                     <ListItemIcon>
                       {setting.icon === "Logout" ? (
                         <Logout
+                          // onClick={handleLogout}
                           fontSize="small"
                           sx={{ color: "secondary.main" }}
                         />
@@ -162,6 +167,6 @@ export const NavBar = ({ startLogout, user }) => {
 };
 
 NavBar.propTypes = {
-  startLogout: PropTypes.func.isRequired,
+  startLogout: PropTypes.func,
   user: PropTypes.object,
 };

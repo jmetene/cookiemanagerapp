@@ -8,7 +8,7 @@ export const CookieManagerRoutes = () => {
       <Route path="" element={<HomePage />} />
 
       {/**Routa por defecto */}
-      <Route path="/*" element={<Navigate to="/home" />} />
+      <Route path="/*" element={<Navigate to="/" />} />
     </Routes>
   );
 };
