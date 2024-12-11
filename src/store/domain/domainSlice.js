@@ -6,7 +6,6 @@ export const domainSlice = createSlice({
     isLoadingDomains: true, // Nos indica si están cargados los dominios o no
     domains: [],
     errorDomainMessage: undefined,
-    domain: null,
   },
   reducers: {
     onAddNewDomain: (state, { payload }) => {
@@ -54,6 +53,13 @@ export const domainSlice = createSlice({
         }
       });
     },
+
+    // Acción para borrar los datos del dominio después del logout
+    onClearDomains: (state) => {
+      state.domains = [];
+      state.isLoadingDomains = true;
+      state.errorDomainMessage = undefined;
+    },
   },
 });
 
@@ -63,4 +69,5 @@ export const {
   onDeleteDomain,
   onLoadDomains,
   onGetDomainById,
+  onClearDomains,
 } = domainSlice.actions;

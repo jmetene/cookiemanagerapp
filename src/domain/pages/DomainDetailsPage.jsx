@@ -17,6 +17,11 @@ export const DomainDetailsPage = () => {
   const [loading, setLoading] = useState(true); // estado de carga
   const [domain, setDomain] = useState(null);
 
+  // Este estado se está controlando en el componente
+  // DomainTabs que centraliza la funcionalidad de saber
+  // en cada momento qué Tab está activa
+  const [activeTab, setActiveTab] = useState(0);
+
   // Cargar dominios al montar el componente
   useEffect(() => {
     if (domains.length === 0) {
@@ -36,6 +41,13 @@ export const DomainDetailsPage = () => {
     }
     // startLoadingDomains();
   }, [loading, id, domains]);
+
+  useEffect(() => {
+    // Guardar el valor de activeTab en el localStorage cada vez que cambie
+    if (activeTab !== undefined) {
+      localStorage.setItem("activeTabIndex", activeTab);
+    }
+  }, [activeTab]);
 
   useEffect(() => {
     // Manejo de errores en la carga
@@ -78,18 +90,30 @@ export const DomainDetailsPage = () => {
                   DETALLES | {domain.nombre}
                 </Button>
               </Grid2>
-              <Grid2 container size={4} alignContent="center">
+              <Grid2
+                container
+                size={4}
+                alignContent="center"
+                sx={{
+                  display: activeTab === 4 ? "flex" : "none",
+                  transition: "opacity 0.3s",
+                }}
+              >
                 <Button
                   variant="contained"
                   sx={{ bgcolor: "secondary.main", ml: 28 }}
                 >
-                  Editar dominio
+                  Añadir cookie
                 </Button>
               </Grid2>
             </Grid2>
           </Box>
           <Box sx={{ mt: 4 }}>
-            <DomainTabs user={user} domain={domain} />
+            <DomainTabs
+              user={user}
+              domain={domain}
+              setActiveTab={setActiveTab}
+            />
           </Box>
         </Container>
       </Grid2>

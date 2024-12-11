@@ -1,10 +1,18 @@
 import { useDispatch, useSelector } from "react-redux";
 import cookieManagerApi from "../api/cookieManagerApi";
-import { clearErrorMessage, onChecking, onLogin, onLogout } from "../store";
+import {
+  clearErrorMessage,
+  cookieSlice,
+  domainSlice,
+  onChecking,
+  onLogin,
+  onLogout,
+} from "../store";
 import { persistor } from "../store/store";
 
 export const useAuthStore = () => {
   const { status, user, errorMessage } = useSelector((state) => state.auth);
+  // const {} = useSelector((state) => state.domain);
 
   const dispatch = useDispatch();
 
@@ -25,6 +33,7 @@ export const useAuthStore = () => {
           name: data.user.firstName,
           lastname: data.user.lastName,
           plan: data.user.suscriptionPlan,
+          role: data.user.role,
         })
       );
     } catch (error) {
@@ -83,6 +92,7 @@ export const useAuthStore = () => {
           name: data.user.firstName,
           lastname: data.user.lastName,
           plan: data.user.suscriptionPlan,
+          role: data.user.role,
         })
       );
     } catch (error) {
@@ -95,11 +105,20 @@ export const useAuthStore = () => {
   const startLogout = async () => {
     try {
       await cookieManagerApi.get("/auth/logout");
+      // purga los datos persistidos
       persistor.purge();
+
+      // Limpia el localStorage
       localStorage.clear();
+
+      // Limpia los estados de cookies y domains
+      dispatch(domainSlice.actions.onClearDomains());
+      dispatch(cookieSlice.actions.onClearCookies());
+
+      // Actualiza el estado de la aplicación
       dispatch(onLogout());
     } catch (error) {
-      console.log("Error al cerrar la sesión", error);
+      console.error("Error al cerrar la sesión", error);
     }
   };
 

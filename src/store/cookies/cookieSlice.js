@@ -52,8 +52,20 @@ export const cookieSlice = createSlice({
         }
       });
     },
+
+    // Acción para borrar todas las cookies después del logout
+    onClearCookies: (state) => {
+      state.cookies = [];
+      state.isLoadingCookies = true;
+      state.errorCookieMessage = undefined;
+    },
   },
 });
 
-export const { onAddNewCookie, onUpdateCookie, onDeleteCookie, onLoadCookies } =
-  cookieSlice.actions;
+export const {
+  onAddNewCookie,
+  onUpdateCookie,
+  onDeleteCookie,
+  onLoadCookies,
+  onClearCookies,
+} = cookieSlice.actions;
