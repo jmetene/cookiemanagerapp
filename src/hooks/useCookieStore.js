@@ -40,6 +40,8 @@ export const useCookieStore = () => {
         }
       );
       dispatch(onAddNewCookie(data));
+      // Devolvemos el dominio creado para usarlo en el componente si fuera necesario
+      return data;
     } catch (error) {
       console.error("Error al crear la cookie:", error);
       const errorMsg = error.response?.data?.msg || "Error desconocido";

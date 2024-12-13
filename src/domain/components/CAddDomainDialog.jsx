@@ -27,8 +27,7 @@ export const CAddDomainDialog = ({
   handleCloseAddDomainDialog,
 }) => {
   const estado = "activo";
-  const { startSavingDomain, startLoadingDomains, errorMessage } =
-    useDomainStore();
+  const { startSavingDomain, errorMessage } = useDomainStore();
 
   const {
     domainName,

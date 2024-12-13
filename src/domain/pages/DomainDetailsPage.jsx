@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { DomainLayout } from "../layout/DomainLayout";
 import { useAuthStore } from "../../hooks";
+import { CAddCookieDialog } from "../components/CAddCookieDialog";
 
 export const DomainDetailsPage = () => {
   const { id } = useParams();
@@ -21,6 +22,17 @@ export const DomainDetailsPage = () => {
   // DomainTabs que centraliza la funcionalidad de saber
   // en cada momento qué Tab está activa
   const [activeTab, setActiveTab] = useState(0);
+
+  // Para controlar el estado del Dialog de añadir cookie
+  const [openAddCookieDialog, setOpenAddCookieDialog] = useState(false);
+
+  const handleOpenAddCookie = () => {
+    setOpenAddCookieDialog(true);
+  };
+
+  const handleCloseAddCookieDialog = () => {
+    setOpenAddCookieDialog(false);
+  };
 
   // Cargar dominios al montar el componente
   useEffect(() => {
@@ -102,6 +114,7 @@ export const DomainDetailsPage = () => {
                 <Button
                   variant="contained"
                   sx={{ bgcolor: "secondary.main", ml: 28 }}
+                  onClick={handleOpenAddCookie}
                 >
                   Añadir cookie
                 </Button>
@@ -115,6 +128,11 @@ export const DomainDetailsPage = () => {
               setActiveTab={setActiveTab}
             />
           </Box>
+          <CAddCookieDialog
+            openAddCookieDialog={openAddCookieDialog}
+            handleCloseAddCookieDialog={handleCloseAddCookieDialog}
+            domainId={id}
+          />
         </Container>
       </Grid2>
     </DomainLayout>

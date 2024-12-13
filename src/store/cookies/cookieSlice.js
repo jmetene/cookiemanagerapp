@@ -10,7 +10,6 @@ export const cookieSlice = createSlice({
   reducers: {
     onAddNewCookie: (state, { payload }) => {
       state.isLoadingCookies = false;
-      state.cookies = payload;
       state.cookies.push(payload);
 
       // Si se produce un error en la creación de la cookie

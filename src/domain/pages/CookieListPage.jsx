@@ -15,7 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import Swal from "sweetalert2";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useCookieStore } from "../../hooks/useCookieStore";
 import { RemoveRedEye } from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
@@ -33,6 +33,7 @@ export const CookieListPage = () => {
     startLoadingCookies,
     startDeletingCookie,
     startUpdatingCookie,
+    startSavingCookie,
     errorMessage,
   } = useCookieStore();
 
@@ -80,7 +81,7 @@ export const CookieListPage = () => {
           icon: "success",
         });
         // Solicitamos otra vez el listado de cookies
-        startLoadingCookies(id);
+        // startLoadingCookies(id);
       }
     });
   };
@@ -140,7 +141,7 @@ export const CookieListPage = () => {
                       </IconButton>
                       <IconButton
                         color="secondary"
-                        // onClick={() => handleOpenEditDomain(cookie)}
+                        // onClick={() => handleOpenAddCookie(cookie)}
                       >
                         <EditIcon />
                       </IconButton>
