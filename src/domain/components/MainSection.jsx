@@ -19,12 +19,10 @@ export const MainSection = () => {
 
   // const { user } = useAuthStore();
   const { domains, isLoadingDomains, startLoadingDomains } = useDomainStore();
-  // const isPersisted = useSelector((state) => state._persist.rehydrated); // Verifica si redux-persist ha restaurado
 
   const user = JSON.parse(localStorage.getItem("currentUser"));
 
   useEffect(() => {
-    // if (isPersisted) {
     startLoadingDomains();
   }, []);
 

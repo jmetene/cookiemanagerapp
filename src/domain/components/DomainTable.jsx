@@ -65,6 +65,11 @@ export const DomainTable = ({ domains = [] }) => {
 
   return (
     <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <CEditDomainDialog
+        openEditDomainDialog={openEditDomainDialog}
+        handleCloseEditDomainDialog={handleCloseEditDomainDialog}
+        domainToEdit={domainToEdit}
+      />
       <TableHead>
         <TableRow>
           <TableCell>Código</TableCell>
@@ -121,11 +126,6 @@ export const DomainTable = ({ domains = [] }) => {
                 >
                   Eliminar
                 </Button>
-                <CEditDomainDialog
-                  openEditDomainDialog={openEditDomainDialog}
-                  handleCloseEditDomainDialog={handleCloseEditDomainDialog}
-                  domainToEdit={domainToEdit}
-                />
               </ButtonGroup>
             </TableCell>
           </TableRow>

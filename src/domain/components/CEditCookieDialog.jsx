@@ -9,35 +9,34 @@ import {
 } from "@mui/material";
 import PropTypes from "prop-types";
 import { CCookieForm } from "./CCookieForm";
-import { useCookieStore } from "../../hooks/useCookieStore";
 import { useForm } from "../../hooks";
+import { useCookieStore } from "../../hooks/useCookieStore";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
-import { addCookieForm } from "../utils/addCookieForm";
+import { editCookieForm } from "../utils/editCookieForm";
 
-export const CAddCookieDialog = ({
-  domainId,
-  openAddCookieDialog,
-  handleCloseAddCookieDialog,
+export const CEditCookieDialog = ({
+  cookie = {},
+  openEditCookieDialog,
+  handleCloseEditCookieDialog,
 }) => {
-  const { startSavingCookie, errorMessage } = useCookieStore();
+  const { startUpdatingCookie, errorMessage } = useCookieStore();
   const {
-    cookieName,
     cookieType,
     description,
     provider,
     duration,
     sameSite,
-    // httpOnly,
     secure,
-    onInputChange: onAddCookieChange,
-  } = useForm(addCookieForm);
+    onInputChange: onEditCookieChange,
+  } = useForm(editCookieForm);
 
-  const onCreateCookieSubmit = (event) => {
+  const onUpdateCookieSubmit = (event) => {
     event.preventDefault();
-    startSavingCookie({
-      domainId: parseInt(domainId, 10),
-      name: cookieName,
+
+    startUpdatingCookie({
+      id: cookie.id,
+      name: cookie.name,
       type: cookieType,
       description: description,
       provider: provider,
@@ -51,7 +50,7 @@ export const CAddCookieDialog = ({
   useEffect(() => {
     if (errorMessage !== undefined) {
       Swal.fire(
-        "Error al guardar los datos de la cookie",
+        "Error al actualizar los datos de la cookie",
         errorMessage,
         "error"
       );
@@ -63,31 +62,32 @@ export const CAddCookieDialog = ({
       <Dialog
         fullWidth
         maxWidth="lg"
-        open={openAddCookieDialog}
-        onClose={handleCloseAddCookieDialog}
+        open={openEditCookieDialog}
+        onClose={handleCloseEditCookieDialog}
         PaperProps={{
           component: "form",
           onSubmit: (event) => {
-            onCreateCookieSubmit(event);
-            handleCloseAddCookieDialog();
+            onUpdateCookieSubmit(event);
+            handleCloseEditCookieDialog();
           },
         }}
       >
         <DialogTitle sx={{ pl: 8, pr: 8 }}>Añadir cookie</DialogTitle>
         <DialogContent sx={{ pl: 8, pr: 8 }}>
           <DialogContentText>
-            Si una cookie no ha sido detectada durante el proceso de escaneo,
-            puedes añadirla manualmente en tu declaración de cookie
+            Si una cookie se ha modificado y durante el proceso de escaneo no se
+            ha detectado los cambios, puedes editarla manualmente en tu
+            declaración de cookie.
           </DialogContentText>
           <CCookieForm
-            cookieName={cookieName}
+            cookieName={cookie.name}
             cookieType={cookieType}
             description={description}
             provider={provider}
             duration={duration}
             sameSite={sameSite}
             secure={secure}
-            onAddCookieChange={onAddCookieChange}
+            onAddCookieChange={onEditCookieChange}
           />
         </DialogContent>
         <DialogActions sx={{ pl: 8, pr: 8, pb: 3 }}>
@@ -100,12 +100,12 @@ export const CAddCookieDialog = ({
               borderColor: "secondary.main",
             }}
           >
-            Añadir cookie
+            Editar cookie
           </Button>
           <Button
             variant="outlined"
             sx={{ bgcolor: "primary.main", color: "white" }}
-            onClick={handleCloseAddCookieDialog}
+            onClick={handleCloseEditCookieDialog}
           >
             Cancelar
           </Button>
@@ -115,8 +115,8 @@ export const CAddCookieDialog = ({
   );
 };
 
-CAddCookieDialog.propTypes = {
-  domainId: PropTypes.string,
-  openAddCookieDialog: PropTypes.bool,
-  handleCloseAddCookieDialog: PropTypes.func,
+CEditCookieDialog.propTypes = {
+  cookie: PropTypes.object,
+  openEditCookieDialog: PropTypes.bool,
+  handleCloseEditCookieDialog: PropTypes.func,
 };

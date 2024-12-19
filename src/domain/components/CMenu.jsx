@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { useAuthStore } from "../../hooks";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export const CMenu = () => {
   const { user, startLogout } = useAuthStore();
@@ -90,7 +91,8 @@ export const CMenu = () => {
           <ListItemIcon>
             <Settings fontSize="small" />
           </ListItemIcon>
-          Configuración
+          <Link to={`/users/${user.name}`}>Configuración</Link>
+          {/* Configuración */}
         </MenuItem>
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>

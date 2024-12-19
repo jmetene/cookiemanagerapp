@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import {
-  Button,
   ButtonGroup,
   IconButton,
   Paper,
@@ -17,25 +16,19 @@ import {
 import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
 import { useCookieStore } from "../../hooks/useCookieStore";
-import { RemoveRedEye } from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { CEditCookieDialog } from "../components/CEditCookieDialog";
 
 export const CookieListPage = () => {
   const { id } = useParams();
-  // const [openEditDomainDialog, setOpenEditDomainDialog] = useState(false);
+  const [openEditCookieDialog, setOpenEditCookieDialog] = useState(false);
 
   // const { startDeletingDomain, errorMessage } = useDomainStore();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const {
-    cookies,
-    startLoadingCookies,
-    startDeletingCookie,
-    startUpdatingCookie,
-    startSavingCookie,
-    errorMessage,
-  } = useCookieStore();
+  const { cookies, startLoadingCookies, startDeletingCookie, errorMessage } =
+    useCookieStore();
 
   useEffect(() => {
     startLoadingCookies(id);
@@ -50,18 +43,18 @@ export const CookieListPage = () => {
     setPage(0);
   };
 
-  // Hook con el la información del dominio a editar
-  // const [domainToEdit, setDomainToEdit] = useState({});
+  // Hook con el la información de la cookie a editar
+  const [cookieToEdit, setCookieToEdit] = useState({});
 
-  // Establecemos el dominio a editar
-  // const handleOpenEditDomain = (domain) => {
-  //   setOpenEditDomainDialog(true);
-  //   setDomainToEdit(domain);
-  // };
+  // Establecemos la cookie a editar
+  const handleOpenEditCookie = (cookie) => {
+    setOpenEditCookieDialog(true);
+    setCookieToEdit(cookie);
+  };
 
-  // const handleCloseEditDomainDialog = () => {
-  //   setOpenEditDomainDialog(false);
-  // };
+  const handleCloseEditCookieDialog = () => {
+    setOpenEditCookieDialog(false);
+  };
 
   const handleDeleteCookie = (cookieId) => {
     Swal.fire({
@@ -95,6 +88,11 @@ export const CookieListPage = () => {
   return (
     <>
       <TableContainer component={Paper}>
+        <CEditCookieDialog
+          openEditCookieDialog={openEditCookieDialog}
+          handleCloseEditCookieDialog={handleCloseEditCookieDialog}
+          cookie={cookieToEdit}
+        />
         <Table sx={{ minWidth: 650, mt: 5 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -135,27 +133,18 @@ export const CookieListPage = () => {
                   </TableCell>
                   <TableCell>
                     <ButtonGroup variant="text" aria-label="Basic button group">
-                      <IconButton>
-                        <RemoveRedEye color="secondary" />
-                        {/* <Link to={`/cookies/${cookie.id}`}>Ver detalles</Link> */}
-                      </IconButton>
                       <IconButton
-                        color="secondary"
-                        // onClick={() => handleOpenAddCookie(cookie)}
+                        color="primary"
+                        onClick={() => handleOpenEditCookie(cookie)}
                       >
                         <EditIcon />
                       </IconButton>
                       <IconButton
                         onClick={() => handleDeleteCookie(cookie.id)}
-                        color="error"
+                        color="primary"
                       >
                         <DeleteIcon />
                       </IconButton>
-                      {/* <CEditDomainDialog
-                  openEditDomainDialog={openEditDomainDialog}
-                  handleCloseEditDomainDialog={handleCloseEditDomainDialog}
-                  domainToEdit={domainToEdit}
-                /> */}
                     </ButtonGroup>
                   </TableCell>
                 </TableRow>

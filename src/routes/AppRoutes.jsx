@@ -3,7 +3,12 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { AuthRoutes } from "../auth/routes/AuthRoutes";
 import { CookieManagerRoutes } from "../cookiemanager/routes/CookieManagerRoutes";
 import { useAuthStore } from "../hooks";
-import { DomainAddPage, DomainDetailsPage, DomainPage } from "../domain/pages";
+import {
+  DomainAddPage,
+  DomainDetailsPage,
+  DomainPage,
+  UserPage,
+} from "../domain/pages";
 import { AdminPage } from "../admin/pages/AdminPage";
 
 // Esto se puede mover a un fichero externo
@@ -20,6 +25,7 @@ const UserRoutes = () => (
     <Route path="/" element={<DomainPage />} />
     <Route path="/domains/:id" element={<DomainDetailsPage />} />
     <Route path="/domains/add" element={<DomainAddPage />} />
+    <Route path="/users/:name" element={<UserPage />} />
     <Route path="/*" element={<Navigate to="/" replace />} />
   </Routes>
 );

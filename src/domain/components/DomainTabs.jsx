@@ -35,7 +35,7 @@ export const DomainTabs = ({ user, domain, setActiveTab }) => {
       <Tabs value={currentTabIndex} onChange={handleChange} centered>
         <Tab label="Descripción general" />
         <Tab label="Implementación" />
-        <Tab label="Ajustes" />
+        <Tab label="Ajustes Banner" />
         <Tab label="Escaneo" />
         <Tab label="Cookies" />
         <Tab label="Informes" />

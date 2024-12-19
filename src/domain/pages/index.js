@@ -6,3 +6,4 @@ export * from "./StatisticsCookiesPage";
 export * from "./ScannerCookiePage";
 export * from "./SettingPage";
 export * from "./CookieListPage";
+export * from "./UserPage";
