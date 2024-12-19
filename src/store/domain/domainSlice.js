@@ -4,7 +4,9 @@ export const domainSlice = createSlice({
   name: "domains",
   initialState: {
     isLoadingDomains: true, // Nos indica si están cargados los dominios o no
+    isLoadingCookieBanner: true, // Nos indica si ya se ha cargado la info. del banner
     domains: [],
+    banner: {},
     errorDomainMessage: undefined,
   },
   reducers: {
@@ -54,11 +56,20 @@ export const domainSlice = createSlice({
       });
     },
 
+    onLoadDomainBanner: (state, { payload }) => {
+      // state.isLoadingDomains = false;
+      state.banner = payload;
+      // state.errorDomainMessage = payload;
+      state.isLoadingCookieBanner = false;
+    },
+
     // Acción para borrar los datos del dominio después del logout
     onClearDomains: (state) => {
       state.domains = [];
+      state.banner = {};
       state.isLoadingDomains = true;
       state.errorDomainMessage = undefined;
+      state.isLoadingCookieBanner = true;
     },
   },
 });
@@ -70,4 +81,5 @@ export const {
   onLoadDomains,
   onGetDomainById,
   onClearDomains,
+  onLoadDomainBanner,
 } = domainSlice.actions;

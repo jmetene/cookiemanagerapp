@@ -4,6 +4,7 @@ import {
   onAddNewDomain,
   onDeleteDomain,
   onGetDomainById,
+  onLoadDomainBanner,
   onLoadDomains,
   onUpdateDomain,
 } from "../store";
@@ -12,9 +13,13 @@ import Swal from "sweetalert2";
 export const useDomainStore = () => {
   const dispatch = useDispatch();
 
-  const { isLoadingDomains, domains, errorMessage } = useSelector(
-    (state) => state.domains
-  );
+  const {
+    isLoadingDomains,
+    isLoadingCookieBanner,
+    domains,
+    banner,
+    errorMessage,
+  } = useSelector((state) => state.domains);
 
   const startSavingDomain = async ({
     nombre,
@@ -118,10 +123,25 @@ export const useDomainStore = () => {
     }
   };
 
+  const startLoadingBanner = async (domainId) => {
+    try {
+      const { data } = await cookieManagerApi.get(
+        `/domains/${domainId}/banner`
+      );
+      console.log(data);
+      dispatch(onLoadDomainBanner(data));
+      return data;
+    } catch (error) {
+      console.log("Error al cargar los datos del banner: ", error);
+    }
+  };
+
   return {
     // Propiedades
     isLoadingDomains,
+    isLoadingCookieBanner,
     domains,
+    banner,
     errorMessage,
     // Métodos
     startSavingDomain,
@@ -129,5 +149,6 @@ export const useDomainStore = () => {
     startDeletingDomain,
     startUpdatingDomain,
     starGettingDomainById,
+    startLoadingBanner,
   };
 };
