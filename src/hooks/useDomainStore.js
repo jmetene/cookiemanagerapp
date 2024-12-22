@@ -4,6 +4,7 @@ import {
   onAddNewDomain,
   onDeleteDomain,
   onGetDomainById,
+  onLoadCookieStatistics,
   onLoadDomainBanner,
   onLoadDomains,
   onUpdateDomain,
@@ -16,8 +17,10 @@ export const useDomainStore = () => {
   const {
     isLoadingDomains,
     isLoadingCookieBanner,
+    isLoadingCookieStatistics,
     domains,
     banner,
+    statistics,
     errorMessage,
   } = useSelector((state) => state.domains);
 
@@ -136,12 +139,49 @@ export const useDomainStore = () => {
     }
   };
 
+  const startLoadingStatistics = async ({
+    domainId,
+    estado,
+    fechaDesde,
+    fechaHasta,
+    plataforma,
+    pais,
+  }) => {
+    try {
+      const { data } = await cookieManagerApi.get(
+        `/domains/${domainId}/estadisticas`,
+        {
+          params: {
+            estado: estado,
+            fechaDesde: fechaDesde,
+            fechaHasta: fechaHasta,
+            plataforma: plataforma,
+            pais: pais,
+          },
+        }
+      );
+
+      console.log({ estadisticas: data });
+      dispatch(onLoadCookieStatistics(data));
+    } catch (error) {
+      console.log("Error en la carga de estadísticas del dominio", domainId);
+      console.log(error);
+      Swal.fire(
+        "Error en la carga de estadísticas del dominio",
+        error.response.data.msg,
+        "error"
+      );
+    }
+  };
+
   return {
     // Propiedades
     isLoadingDomains,
     isLoadingCookieBanner,
+    isLoadingCookieStatistics,
     domains,
     banner,
+    statistics,
     errorMessage,
     // Métodos
     startSavingDomain,
@@ -150,5 +190,6 @@ export const useDomainStore = () => {
     startUpdatingDomain,
     starGettingDomainById,
     startLoadingBanner,
+    startLoadingStatistics,
   };
 };

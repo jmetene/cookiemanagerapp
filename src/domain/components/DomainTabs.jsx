@@ -47,7 +47,7 @@ export const DomainTabs = ({ user, domain, setActiveTab }) => {
       {currentTabIndex === 2 && <SettingPage />}
       {currentTabIndex === 3 && <ScannerCookiePage />}
       {currentTabIndex === 4 && <CookieListPage />}
-      {currentTabIndex === 5 && <StatisticsCookiesPage />}
+      {currentTabIndex === 5 && <StatisticsCookiesPage domain={domain} />}
     </Box>
   );
 };

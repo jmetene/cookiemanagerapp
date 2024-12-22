@@ -5,7 +5,9 @@ export const domainSlice = createSlice({
   initialState: {
     isLoadingDomains: true, // Nos indica si están cargados los dominios o no
     isLoadingCookieBanner: true, // Nos indica si ya se ha cargado la info. del banner
+    isLoadingCookieStatistics: true, // Nos indica si ya se han cargado las estadísticas
     domains: [],
+    statistics: [], // Listado de estadísiticas del dominio
     banner: {},
     errorDomainMessage: undefined,
   },
@@ -63,13 +65,28 @@ export const domainSlice = createSlice({
       state.isLoadingCookieBanner = false;
     },
 
+    onLoadCookieStatistics: (state, { payload = [] }) => {
+      state.isLoadingCookieStatistics = false;
+      state.statistics = payload;
+
+      // Si se añade una nuesva estadísitca
+      payload.forEach((stat) => {
+        const exists = state.statistics.some((dbStat) => dbStat.id === stat.id);
+        if (!exists) {
+          state.domains.push(stat);
+        }
+      });
+    },
+
     // Acción para borrar los datos del dominio después del logout
     onClearDomains: (state) => {
       state.domains = [];
       state.banner = {};
+      state.statistics = [];
       state.isLoadingDomains = true;
       state.errorDomainMessage = undefined;
       state.isLoadingCookieBanner = true;
+      state.isLoadingCookieStatistics = true;
     },
   },
 });
@@ -82,4 +99,5 @@ export const {
   onGetDomainById,
   onClearDomains,
   onLoadDomainBanner,
+  onLoadCookieStatistics,
 } = domainSlice.actions;

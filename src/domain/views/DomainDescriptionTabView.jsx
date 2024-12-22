@@ -5,21 +5,19 @@ import { generateCards } from "../utils/generateCards";
 import { useEffect } from "react";
 import { useDomainStore } from "../../hooks/useDomainStore";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
 
 export const DomainDescriptionTabView = ({ domain = {}, user = {} }) => {
   // Recuperamos del hook de domain store la funcionalidad para cargar el banner
   const { banner, startLoadingBanner, isLoadingCookieBanner } =
     useDomainStore();
-  // State para manegar el estado del banner
+  // State to manage the banner status
   const [cookieBanner, setCookieBanner] = useState({});
-  // const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (isLoadingCookieBanner) {
       startLoadingBanner(domain.id);
     }
-  }, [domain.id]);
+  }, [domain.id, isLoadingCookieBanner, startLoadingBanner]);
 
   useEffect(() => {
     if (!isLoadingCookieBanner) {
@@ -27,7 +25,7 @@ export const DomainDescriptionTabView = ({ domain = {}, user = {} }) => {
     }
   }, [banner, isLoadingCookieBanner]);
 
-  // Función para geenerar las tarjetas con los detalles del dominio
+  // Function to generate cards with domain details
   const cards = generateCards(domain, cookieBanner, user);
 
   return (
@@ -48,11 +46,6 @@ export const DomainDescriptionTabView = ({ domain = {}, user = {} }) => {
 };
 
 DomainDescriptionTabView.propTypes = {
-  domain: PropTypes.shape({
-    totalCookies: PropTypes.number,
-    lastCookieScan: PropTypes.string, // Se espera un string en formato ISO
-  }),
-  user: PropTypes.shape({
-    plan: PropTypes.string,
-  }),
+  user: PropTypes.object,
+  domain: PropTypes.object,
 };
