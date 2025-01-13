@@ -1,7 +1,10 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import {
+  Backdrop,
+  Box,
   ButtonGroup,
+  CircularProgress,
   IconButton,
   Paper,
   Table,
@@ -27,8 +30,13 @@ export const CookieListPage = () => {
   // const { startDeletingDomain, errorMessage } = useDomainStore();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const { cookies, startLoadingCookies, startDeletingCookie, errorMessage } =
-    useCookieStore();
+  const {
+    cookies,
+    startLoadingCookies,
+    startDeletingCookie,
+    isLoadingCookies,
+    errorMessage,
+  } = useCookieStore();
 
   useEffect(() => {
     startLoadingCookies(id);
@@ -87,80 +95,103 @@ export const CookieListPage = () => {
 
   return (
     <>
-      <TableContainer component={Paper}>
-        <CEditCookieDialog
-          openEditCookieDialog={openEditCookieDialog}
-          handleCloseEditCookieDialog={handleCloseEditCookieDialog}
-          cookie={cookieToEdit}
-        />
-        <Table sx={{ minWidth: 650, mt: 5 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Nombre</TableCell>
-              <TableCell>Tipo</TableCell>
-              <TableCell>Descripción</TableCell>
-              <TableCell>Provedor</TableCell>
-              <TableCell>Duración</TableCell>
-              <TableCell>Operaciones</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {cookies
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((cookie) => (
-                <TableRow
-                  key={cookie.id}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    <Typography variant="body1">{cookie.name}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="body1">
-                      {cookie.type.toLowerCase()}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="body1">
-                      {cookie.description}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="body1">{cookie.provider}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="body1">{cookie.duration}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <ButtonGroup variant="text" aria-label="Basic button group">
-                      <IconButton
-                        color="primary"
-                        onClick={() => handleOpenEditCookie(cookie)}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton
-                        onClick={() => handleDeleteCookie(cookie.id)}
-                        color="primary"
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </ButtonGroup>
-                  </TableCell>
+      {isLoadingCookies === true ? (
+        <Box>
+          <Backdrop
+            sx={(theme) => ({
+              color: "#fff",
+              zIndex: theme.zIndex.drawer + 1,
+            })}
+            open
+          >
+            <CircularProgress color="inherit" />
+          </Backdrop>
+        </Box>
+      ) : (
+        <Box>
+          <TableContainer component={Paper}>
+            <CEditCookieDialog
+              openEditCookieDialog={openEditCookieDialog}
+              handleCloseEditCookieDialog={handleCloseEditCookieDialog}
+              cookie={cookieToEdit}
+            />
+            <Table sx={{ minWidth: 650, mt: 5 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Nombre</TableCell>
+                  <TableCell>Tipo</TableCell>
+                  <TableCell>Descripción</TableCell>
+                  <TableCell>Provedor</TableCell>
+                  <TableCell>Duración</TableCell>
+                  <TableCell>Operaciones</TableCell>
                 </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={cookies.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+              </TableHead>
+              <TableBody>
+                {cookies
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((cookie) => (
+                    <TableRow
+                      key={cookie.id}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        <Typography variant="body1">{cookie.name}</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography variant="body1">
+                          {cookie.type.toLowerCase()}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography variant="body1">
+                          {cookie.description}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography variant="body1">
+                          {cookie.provider}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography variant="body1">
+                          {cookie.duration}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <ButtonGroup
+                          variant="text"
+                          aria-label="Basic button group"
+                        >
+                          <IconButton
+                            color="primary"
+                            onClick={() => handleOpenEditCookie(cookie)}
+                          >
+                            <EditIcon />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => handleDeleteCookie(cookie.id)}
+                            color="primary"
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </ButtonGroup>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={cookies.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Box>
+      )}
     </>
   );
 };

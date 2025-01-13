@@ -12,13 +12,10 @@ import { persistor } from "../store/store";
 
 export const useAuthStore = () => {
   const { status, user, errorMessage } = useSelector((state) => state.auth);
-  // const {} = useSelector((state) => state.domain);
 
   const dispatch = useDispatch();
 
   const startLogin = async ({ email, password }) => {
-    console.log({ email, password });
-
     dispatch(onChecking());
     try {
       const { data } = await cookieManagerApi.post("/auth/login", {
@@ -63,7 +60,7 @@ export const useAuthStore = () => {
         company,
         suscriptionPlan,
       });
-      console.log(response);
+      return response;
     } catch (error) {
       dispatch(onLogout(error.response.data?.error.violations[0] || ""));
       setTimeout(() => {
@@ -85,7 +82,6 @@ export const useAuthStore = () => {
     try {
       const { data } = await cookieManagerApi.get("/auth/refreshToken");
       localStorage.setItem("token", "Bearer " + data.token);
-      console.log({ UserWithRefreshToken: data });
       dispatch(
         onLogin({
           email: data.user.email,

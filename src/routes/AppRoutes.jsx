@@ -10,6 +10,7 @@ import {
   UserPage,
 } from "../domain/pages";
 import { AdminPage } from "../admin/pages/AdminPage";
+import { Backdrop, Box, CircularProgress } from "@mui/material";
 
 // Esto se puede mover a un fichero externo
 const AdminRoutes = () => (
@@ -47,7 +48,16 @@ export const AppRoutes = () => {
   }, []);
 
   if (status === "checking") {
-    return <div>Cargando...</div>;
+    return (
+      <Box>
+        <Backdrop
+          sx={(theme) => ({ color: "#bbf", zIndex: theme.zIndex.drawer + 1 })}
+          open
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      </Box>
+    );
   }
 
   if (status === "not-authenticated") {

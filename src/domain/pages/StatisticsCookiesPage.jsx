@@ -18,6 +18,7 @@ import { useDomainStore } from "../../hooks/useDomainStore";
 import { useForm } from "../../hooks";
 import { useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
+import { CookieStats } from "../components/CookieStats";
 
 const statisticsFormFields = {
   initDate: "",
@@ -28,11 +29,27 @@ const statisticsFormFields = {
   state: "",
 };
 
-export const StatisticsCookiesPage = ({ domain }) => {
-  const { startLoadingStatistics, isLoadingCookieStatistics } =
-    useDomainStore();
+const contarCookies = (estadisticas) => {
+  return estadisticas.reduce(
+    (contador, estadistica) => {
+      if (estadistica.estado === "Aceptado") contador.aceptadas += 1;
+      if (estadistica.estado === "Rechazado") contador.rechazadas += 1;
+      return contador;
+    },
+    { aceptadas: 0, rechazadas: 0 }
+  );
+};
 
-  const [value, setvalue] = useState(DateRangePicker < Dayjs >> [null, null]);
+export const StatisticsCookiesPage = ({ domain }) => {
+  const {
+    statistics = [],
+    startLoadingStatistics,
+    isLoadingCookieStatistics,
+  } = useDomainStore();
+
+  // Evitamos que seleccione la fecha actual por defecto
+  const [value, setvalue] = useState([null, null]);
+  // const [value, setvalue] = useState(DateRangePicker < Dayjs >> [null, null]);
 
   const {
     initDate,
@@ -42,6 +59,7 @@ export const StatisticsCookiesPage = ({ domain }) => {
     platform,
     state,
     onInputChange: onStatisticsInputChange,
+    onResetForm: clearFilter,
   } = useForm(statisticsFormFields);
 
   const onStatisticsSubmit = (event) => {
@@ -49,8 +67,16 @@ export const StatisticsCookiesPage = ({ domain }) => {
     startLoadingStatistics({
       domainId: domain.id,
       estado: state,
-      fechaDesde: dayjs(value[0]).format("YYYY-MM-DD", "us", true),
-      fechaHasta: dayjs(value[1]).format("YYYY-MM-DD", "us", true),
+      // Recoge la fecha actual y la formatea a un formato que acepta la API
+      // TODO: evitar que coja la fecha actual si no se indica nada
+      fechaDesde:
+        value[0] === null
+          ? ""
+          : dayjs(value[0]).format("YYYY-MM-DD", "us", true),
+      fechaHasta:
+        value[1] == null
+          ? ""
+          : dayjs(value[1]).format("YYYY-MM-DD", "us", true),
       plataforma: platform,
       pais: country,
     });
@@ -64,6 +90,9 @@ export const StatisticsCookiesPage = ({ domain }) => {
     plataforma: platform,
     pais: country,
   });
+
+  const { aceptadas, rechazadas } = contarCookies(statistics);
+  console.log({ aceptadas, rechazadas });
 
   return (
     <Grid2 container sx={{ pb: 10, pt: 4, pl: 14, mr: 14 }}>
@@ -144,7 +173,7 @@ export const StatisticsCookiesPage = ({ domain }) => {
                 name="platform"
                 value={platform}
               >
-                <MenuItem value="movil">Móvil</MenuItem>
+                <MenuItem value="Mobile">Móvil</MenuItem>
                 <MenuItem value="web">Web</MenuItem>
               </Select>
             </FormControl>
@@ -190,10 +219,18 @@ export const StatisticsCookiesPage = ({ domain }) => {
                 mt: 2,
                 bgcolor: "primary.main",
               }}
-              // onClick={clearFilter}
+              onClick={clearFilter}
             >
               Limpiar filtros
             </Button>
+            <Typography variant="body2" sx={{ mt: 2 }}>
+              Estadísticas de cookies
+            </Typography>
+            {statistics.length > 0 && !isLoadingCookieStatistics ? (
+              <CookieStats aceptadas={aceptadas} rechazadas={rechazadas} />
+            ) : (
+              <Typography>No hay datos disponibles.</Typography>
+            )}
           </Box>
         </Grid2>
       </form>
